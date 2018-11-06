@@ -17,14 +17,14 @@ Implementing a cascade controller for quadrotors in C++ to control body rate/pit
 
 ## File description
 
-- [QuadControlParams.txt](./cpp/config/QuadControlParams.txt): This file contains the configuration for the controller. The simulator checks config files during run-time and applies new parameters on the next loop execution upon changes.
-- [QuadControl.cpp](./cpp/src/QuadControl.cpp): This file contains the implementation of the controller. The original file with placeholders for the controllers was provided by Udacity [here](https://github.com/udacity/FCND-Controls-CPP/blob/master/src/QuadControl.cpp). 
+- [QuadControlParams.txt](./config/QuadControlParams.txt): This file contains the configuration for the controller. The simulator checks config files during run-time and applies new parameters on the next loop execution upon changes.
+- [QuadControl.cpp](./src/QuadControl.cpp): This file contains the implementation of the controller. The original file with placeholders for the controllers was provided by Udacity [here](https://github.com/udacity/FCND-Controls-CPP/blob/master/src/QuadControl.cpp). 
 
 ## Scenario description
 
 #### Scenario 1: Intro
 
-This is an introductory scenario to test the simulator and adjust the `Mass` parameters in [QuadControlParams.txt](./cpp/config/QuadControlParams.txt) to make the vehicle stay in the same altitude.
+This is an introductory scenario to test the simulator and adjust the `Mass` parameters in [QuadControlParams.txt](./config/QuadControlParams.txt) to make the vehicle stay in the same altitude.
 
 #### Scenario 2: Body rate and roll/pitch control
 
@@ -62,15 +62,11 @@ You're reading it! Below I describe how I addressed each rubric point and where 
 
 ### Implemented body rate control in C++.
 
-This part is implemented in [QuadControl::BodyRateControl](./cpp/src/QuadControl.cpp#L104-L105):
-
 ```cpp
 V3F pqrErr = pqrCmd - pqr;
 momentCmd = V3F(Ixx, Iyy, Izz) * kpPQR * pqrErr;
 ```
 ### Implement roll pitch control in C++.
-
-This part is implemented in [QuadControl::RollPitchControl](./cpp/src/QuadControl.cpp#L134-L147):
 
 ```cpp
 float c_d = collThrustCmd / mass;
@@ -96,8 +92,6 @@ pqrCmd.z = 0.f;
 
 ### Implement altitude controller in C++.
 
-This part is implemented in [QuadControl::AltitudeControl](./cpp/src/QuadControl.cpp#L177-L183):
-
 ```cpp
 float zErr = posZCmd - posZ;
 integratedAltitudeError += zErr * dt;
@@ -109,8 +103,6 @@ thrust = CONSTRAIN(mass * (9.81f - accelCmd) / R(2, 2), 4 * minMotorThrust, 4 * 
 ```
 
 ### Implement lateral position control in C++.
-
-This part is implemented in [QuadControl::LateralPositionControl](./cpp/src/QuadControl.cpp#L219-L224):
 
 ```cpp
 V3F posErr = posCmd - pos;
@@ -132,8 +124,6 @@ accelCmd.z = 0;
 
 ### Implement yaw control in C++.
 
-This part is implemented in [QuadControl::YawControl](./cpp/src/QuadControl.cpp#L245-L256):
-
 ```cpp
 yawCmd = fmod(yawCmd, 2.0f * F_PI);
 float yaw_error = yawCmd - yaw;
@@ -147,8 +137,6 @@ yawRateCmd = kpYaw * yaw_error;
 ```
 
 ### Implement calculating the motor commands given commanded thrust and moments in C++.
-
-This part is implemented in [QuadControl::GenerateMotorCommands](./cpp/src/QuadControl.cpp#L72-L81):
 
 ```cpp
 float l = L / sqrtf(2.f);
